@@ -49,7 +49,7 @@
                 <div class="py-2 px-3">
                     <p class="mb-3">
                         <span class="font-bold text-lg text-gray-700 mt-2">Total:</span>
-                        $ {{ Cart::subtotal() }}
+                        $ {{ str_replace(',','',Cart::subtotal()) }}
                     </p>
                     {{-- <x-button href="{{route('shopping-cart')}}" color='orange' class="w-full"> --}}
                     <x-button onclick="window.location.href='{{ route('shopping-cart') }}'" color='orange'

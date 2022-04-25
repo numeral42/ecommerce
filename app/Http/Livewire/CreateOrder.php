@@ -20,7 +20,6 @@ class CreateOrder extends Component
         'contact' => 'required',
         'phone' => 'required',
         'envio_type' => 'required',
-
     ];
 
     public function mount()
@@ -67,7 +66,7 @@ class CreateOrder extends Component
         $order->phone = $this->phone;
         $order->envio_type = $this->envio_type;
         $order->shipping_cost = 0;
-        $order->total = Cart::subtotal() + $this->shipping_cost;
+        $order->total = str_replace(',', '', Cart::subtotal()) + $this->shipping_cost;
         $order->content = Cart::content();
 
         if ($this->envio_type == 2) {
@@ -87,6 +86,11 @@ class CreateOrder extends Component
         }
 
         $order->save();
+
+        foreach (Cart::content() as $item) {
+            discount($item);
+        }
+
         Cart::destroy();
         return redirect()->route('orders.payment', $order);
     }

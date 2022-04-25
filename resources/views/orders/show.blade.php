@@ -1,51 +1,52 @@
 <x-app-layout>
 
-    @php
-        // SDK de Mercado Pago
-        require base_path('vendor/autoload.php');
-        // Agrega credenciales
-        MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
-        
-        // Crea un objeto de preferencia
-        $preference = new MercadoPago\Preference();
-        
-        $shipments = new MercadoPago\Shipments();
-        
-        $shipments->cost = $order->shipping_cost;
-        $shipments->mode = 'not_specified';
-        
-        $preference->shipments = $shipments;
-        // Crea un ítem en la preferencia
-        
-        foreach ($items as $product) {
-            $item = new MercadoPago\Item();
-            $item->title = $product->name;
-            $item->quantity = $product->qty;
-            $item->unit_price = $product->price;
-        
-            $products[] = $item;
-        }
-        
-        $preference->back_urls = [
-            'success' => 'http://localhost/orders/pay?order_id=' . $order->id, /*'http://localhost/pays/success', route('orders.pay',$order), */
-            'failure' => 'http://localhost/orders/pay?order_id=' . $order->id, /* 'http://localhost/pays/failure', */
-            'pending' => 'http://localhost/orders/pay?order_id=' . $order->id, /* 'http://localhost/pays/pending', */
-        ];
-        $preference->auto_return = 'approved';
-        
-        $preference->items = $products;
-        $preference->save();
-     
-    @endphp 
+    <div class=" max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <div class=" container py-8">
-        <div class="bg-white rounded-lg shadow-lg px-6 py-4 mb-6">
+        <div class="bg-white rounded-lg shadow-lg px-12 py-8 mb-6 flex items-center">
+            <div class="relative">
+                <div
+                    class="{{ $order->status >= 2 && $order->status != 5 ? 'bg-blue-400' : 'bg-gray-400' }} rounded-full flex h-12 w-12 items-center justify-center">
+                    <i class="fas fa-check text-white"></i>
+                </div>
+                <div class="absolute -left-6 mt-0.5">
+                    Comfirmada
+                </div>
+            </div>
+            <div
+                class="h-1 flex-1 {{ $order->status >= 3 && $order->status != 5 ? 'bg-blue-400' : 'bg-gray-400' }} mx-2">
+            </div>
+            <div class="relative">
+                <div
+                    class="{{ $order->status >= 3 && $order->status != 5 ? 'bg-blue-400' : 'bg-gray-400' }} rounded-full flex h-12 w-12 items-center justify-center">
+                    <i class="fas fa-truck text-white"></i>
+                </div>
+                <div class="absolute -left-1 mt-0.5">
+                    Enviada
+                </div>
+            </div>
+            <div
+                class="h-1 flex-1 {{ $order->status >= 4 && $order->status != 5 ? 'bg-blue-400' : 'bg-gray-400' }} mx-2">
+            </div>
+            <div class="relative">
+                <div
+                    class="{{ $order->status >= 4 && $order->status != 5 ? 'bg-blue-400' : 'bg-gray-400' }} rounded-full flex h-12 w-12 items-center justify-center">
+                    <i class="fas fa-check text-white"></i>
+                </div>
+                <div class="absolute -left-3.5 mt-0.5">
+                    Entregada
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg px-6 py-4 mb-6 flex items-center">
             <p class=" text-gray-700 uppercase"><span class=" font-semibold">Número de orden:</span>
                 order-{{ $order->id }}
             </p>
-
+            @if ($order->status==1)
+            <x-button  onclick="window.location.href='{{route('orders.payment',$order)}}'" class="ml-auto" color="orange">Ir a pagar</x-button>
+            @endif
         </div>
-
+       
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
             <div class="grid grid-cols-2 gap-6 text-gray-700">
                 <div class="">
@@ -67,7 +68,6 @@
                 </div>
             </div>
         </div>
-
         <div class="bg-white rounded-lg shadow-lg p-6 text-gray-700 mb-6">
             <p class="text-xl font-semibold mb-4">Resumen</p>
             <table class="table-auto w-full text-center">
@@ -85,7 +85,8 @@
                         <tr>
                             <td>
                                 <div class=" flex ">
-                                    <img class="h-15 w-20 object-cover mr-4" src="{{ $item->options->image }}" alt="">
+                                    <img class="h-15 w-20 object-cover mr-4" src="{{ $item->options->image }}"
+                                        alt="">
                                     <article>
                                         <h1 class=" font-bold">{{ $item->name }}</h1>
                                         <div class="flex text-xs">
@@ -108,42 +109,5 @@
                 </tbody>
             </table>
         </div>
-        
-        <div class="bg-white rounded-lg shadow-lg px-6 py-5 flex justify-between items-center">
-            <img class=" h-28" src="{{ Storage::url('images/pagos.png') }}" alt="">
-            <div class="text-gray-700">
-                <p class=" text-sm font-semibold">
-                    Subtotal: $ {{ $order->total - $order->shipping_cost }}
-                </p>
-                <p class=" text-sm font-semibold">
-                    Envío: $ {{ $order->shipping_cost }}
-                </p>
-                <p class=" text-lg font-semibold">
-                    Total: $ {{ $order->total }}
-                </p>
-                <p>
-                <div class="cho-container grid mt-2"></div>
-                </p>
-            </div>
-        </div>
     </div>
-    </div>
-
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script>
-        const mp = new MercadoPago("{{ config('services.mercadopago.key') }}", {
-            locale: 'es-AR'
-        });
-
-        mp.checkout({
-            preference: {
-                id: '{{ $preference->id }}'
-            },
-            render: {
-                container: '.cho-container',
-                label: 'Pagar',
-            }
-        });
-    </script>
-
 </x-app-layout>

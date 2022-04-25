@@ -36,7 +36,7 @@
 </head>
 
 <body class="font-sans antialiased bg-slate-200">
-    <x-jet-banner />
+    <x-banner />
 
     <div class="min-h-screen">
         @livewire('navigation')

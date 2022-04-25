@@ -16,7 +16,7 @@ class AddCartColor extends Component
     public $product;
     public $qty = 1;
     public $quantity = 0;
-    public $carts;
+    /* public $carts; */
 
     public function mount()
     {
@@ -58,8 +58,8 @@ class AddCartColor extends Component
     }
     public function render()
     {
-        $this->carts=Cart::content()->where('id',$this->product->id)->sum('qty');
-        $this->colors = $this->product->colors;
+      /*   $this->carts=Cart::content()->where('id',$this->product->id)->sum('qty'); */
+        /* $this->colors = $this->product->colors; */
         return view('livewire.add-cart-color');
     }
 }

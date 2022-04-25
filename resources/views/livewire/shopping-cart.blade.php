@@ -80,7 +80,7 @@
                 <div class=""> 
                     <p class=" text-gray-700 ">
                         <span class="font-bold text-lg">Total: </span>
-                        $ {{Cart::subTotal()}}
+                        $ {{str_replace(',','',Cart::subTotal())}}
                     </p>
                 </div>
                 <div class="">

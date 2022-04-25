@@ -15,7 +15,7 @@ class AddCartSize extends Component
     public $qty = 1;
     public $quantity = 0;
     public $size_id = "";
-    public $carts;
+  /*   public $carts; */
     public $options = [];
 
     public function mount()
@@ -35,7 +35,7 @@ class AddCartSize extends Component
             'options' => $this->options
         ]);
         $this->quantity = qty_available($this->product->id, $this->color_id, $this->size_id);
-        $this->reset('qty','color_id','size_id');
+        $this->reset('qty'/* ,'color_id','size_id' */);
         $this->emitTo('dropdown-cart', 'render');
     }
 
@@ -55,7 +55,6 @@ class AddCartSize extends Component
         $this->options['color_id'] = $color->id;
     }
 
-
     public function decrement()
     {
         --$this->qty;
@@ -66,7 +65,8 @@ class AddCartSize extends Component
     }
 
     public function render()
-    {$this->carts=Cart::content()->where('id',$this->product->id)->sum('qty');
+    {
+        /* $this->carts=Cart::content()->where('id',$this->product->id)->sum('qty'); */
         return view('livewire.add-cart-size');
     }
 }

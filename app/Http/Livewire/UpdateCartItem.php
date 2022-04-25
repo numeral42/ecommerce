@@ -13,7 +13,7 @@ class UpdateCartItem extends Component
     {
         $item = Cart::get($this->rowId);
         $this->qty = $item->qty;
-        $this->quantity = quantity($item->id);
+        $this->quantity = qty_available($item->id);
         /* $this->quantity = qty_available($item->id); */
     }
 

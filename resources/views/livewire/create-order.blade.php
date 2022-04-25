@@ -23,14 +23,16 @@
             <p class=" mt-6 mb-3 text-lg text-gray-700 font-semibold">Envíos</p>
 
             <x-jet-label class=" bg-white rounded-lg shadow px-6 py-4 flex items-center mb-4">
-                <x-jet-input class=" text-gray-700" name="envio_type" value="1" x-model="envio_type" type="radio"
+                <x-jet-input class=" text-gray-700" name="envio_type" value="1" 
+                x-model="envio_type" type="radio"
                     name="envio"></x-jet-input>
                 <span class="ml-2 text-gray-700">Retirar por tienda (Calle: Santa Cruz nº376)</span>
                 <span class=" font-semibold text-gray-700 ml-auto">Gratis</span>
             </x-jet-label>
             <div class="bg-white rounded-lg shadow ">
                 <x-jet-label class=" px-6 py-4 flex items-center">
-                    <x-jet-input class=" text-gray-700" name="envio_type" value="2" x-model="envio_type" type="radio"
+                    <x-jet-input class=" text-gray-700" name="envio_type" value="2" 
+                    x-model="envio_type" type="radio"
                         name="envio"></x-jet-input>
                     <span class="ml-2 text-gray-700">Envío a domicilio</span>
                     <span class=" font-semibold text-gray-700 ml-auto">$</span>
@@ -41,7 +43,8 @@
                         {{-- Departments --}}
                         <div class="">
                             <x-jet-label value="Departamento" />
-                            <select class="form-control p-2 w-full" wire:model="department_id">
+                            <select class="form-control p-2 w-full" 
+                            wire:model="department_id">
                                 <option value="" disabled>Seleccione un departamento</option>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -52,7 +55,8 @@
                         {{-- Cities --}}
                         <div class="">
                             <x-jet-label value="Ciudades" />
-                            <select class="form-control p-2 w-full" wire:model="city_id">
+                            <select class="form-control p-2 w-full" 
+                            wire:model="city_id">
                                 <option value="" disabled>Seleccione una cuidad</option>
                                 @foreach ($cities as $city)
                                     <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -63,7 +67,8 @@
                         {{-- Districts --}}
                         <div class="">
                             <x-jet-label value="Distritos" />
-                            <select class="form-control p-2 w-full" wire:model="district_id">
+                            <select class="form-control p-2 w-full" 
+                            wire:model="district_id">
                                 <option value="" disabled>Seleccione un distrito</option>
                                 @foreach ($districts as $district)
                                     <option value="{{ $district->id }}">{{ $district->name }}</option>
@@ -75,13 +80,15 @@
                         <div class="">
                             <x-jet-label value="Dirección" />
                             <x-jet-input type="text" class="form-control w-full"
-                                placeholder="Ingrese la dirección de entrega" wire:model="address"></x-jet-input>
+                                placeholder="Ingrese la dirección de entrega" 
+                                wire:model="address"></x-jet-input>
                                 <x-jet-input-error for="address"></x-jet-input-error>
                             </div>
                         {{-- Referencia --}}
                         <div class=" col-span-2">
                             <x-jet-label value="Referencias" />
-                            <x-jet-input type="text" class="form-control w-full" placeholder="" wire:model="references">
+                            <x-jet-input type="text" class="form-control w-full" placeholder="" 
+                            wire:model="references">
                             </x-jet-input>
                             <x-jet-input-error for="references"></x-jet-input-error>
                         </div>
@@ -139,7 +146,7 @@
             <div class="text-gray-700 mt-4">
                 <p class="flex justify-between items-center">
                     Subtotal:
-                    <span class=" font-semibold">$ {{ Cart::subtotal() }}</span>
+                    <span class=" font-semibold">$ {{ str_replace(',','',Cart::subtotal()) }}</span>
                 </p>
                 <p class="flex justify-between items-center">
                     Envío:
@@ -155,9 +162,9 @@
                 <p class="flex justify-between items-center font-semibold">
                     <span class=" text-lg"> Total:</span>
                     @if ($envio_type==1)
-                        $ {{ Cart::subtotal()}}
+                        $ {{ str_replace(',','',Cart::subtotal())}}
                     @else
-                        $ {{ Cart::subtotal() + $shipping_cost }}
+                        $ {{ str_replace(',','',Cart::subtotal()) + $shipping_cost }}
                     @endif
                 </p>
             </div>

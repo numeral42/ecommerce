@@ -1,9 +1,9 @@
 <div x-data>
     <p class="text-gray-700 mb-4">
-        <span class="font-semibold text-lg">Stock disponible:</span>{{ qty_available($product->id)}}
+        <span class="font-semibold text-lg">Stock disponible:</span>{{-- {{ qty_available($product->id)}} --}}
 {{--         <p> {{ quantity($product->id)}}</p>
         <p> {{ qty_added($product->id) }}</p> --}}
-
+        {{$quantity}}
     </p>
     <div class="flex">
         <div class="mr-4">
